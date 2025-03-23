@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "../../go lang/repo/golang_pradeep"
+		},
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "sre_site"
+	}
+}

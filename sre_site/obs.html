@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html5 lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Observability Guide</title>
+    <style>
+        body { font-family: 'Arial', sans-serif; margin: 0; padding: 0; background: #f4f7f6; color: #333; }
+        .container { max-width: 900px; margin: 50px auto; padding: 20px; background: white; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0,0,0,0.1); }
+        h1, h2 { color: #2c3e50; text-align: center; }
+       
+        details { margin-bottom: 15px; padding: 10px; border-radius: 5px; background: #ecf0f1; cursor: pointer; }
+        summary { font-weight: bold; font-size: 18px; }
+        .anti-pattern, .best-practice { padding: 15px; border-left: 5px solid; border-radius: 5px; margin-top: 5px; }
+        .anti-pattern { border-left-color: #e74c3c; background: #fdecea; }
+        .best-practice { border-left-color: #2ecc71; background: #eafaf1; }
+        .quiz-section { margin-top: 20px; padding: 20px; background: #fff8dc; border-radius: 5px; text-align: center; }
+        .quiz-option { display: block; margin: 10px 0; font-size: 16px; }
+        button { margin-top: 15px; padding: 12px 20px; border: none; background: #3498db; color: white; font-size: 16px; border-radius: 5px; cursor: pointer; transition: 0.3s; }
+        button:hover { background: #2980b9; }
+        .score-result { font-weight: bold; color: #d35400; margin-top: 15px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background: #3498db; color: white; }
+        .container { max-width: 900px; margin: auto; background: white; padding: 20px; border-radius: 8px; }
+        h1, h2 { color: #333; }
+        .quiz { margin-top: 20px; padding: 15px; background: #d1ecf1; border-left: 5px solid #17a2b8; }
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #17a2b8;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .submit-btn:hover {
+            background-color: #138496;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        @media (max-width: 600px) {
+        img {
+            width: 100%;
+        }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Observability Guide</h1>
+        <p>Learn how to build effective observability and avoid common anti-patterns.</p>
+        
+        <h2>Core Components of Observability</h2>
+        <details>
+            <summary>Logs</summary>
+            <p>Logs provide detailed records of system events. They help diagnose issues by capturing error messages, warnings, and general system behavior.</p>
+        </details>
+        <details>
+            <summary>Metrics</summary>
+            <p>Metrics provide numerical data on system performance, such as CPU usage, request latency, and error rates. These are essential for real-time monitoring.</p>
+        </details>
+        <details>
+            <summary>Traces</summary>
+            <p>Traces track the journey of a request across services, helping to identify bottlenecks and latency issues in distributed systems.</p>
+        </details>
+
+        <img src="./img/image.png">
+
+        
+        <h2>Anti-Patterns and Best Practices</h2>
+        <details>
+            <summary>Forgetting the Customer</summary>
+            <div class="anti-pattern">Ignoring customer impact and focusing only on system health.</div>
+            <div class="best-practice">Track customer-centric metrics such as latency, availability, and user experience.</div>
+        </details>
+        <details>
+            <summary>Environment Inconsistency</summary>
+            <div class="anti-pattern">Different environments have different logging and monitoring configurations.</div>
+            <div class="best-practice">Ensure observability is consistent across all environments.</div>
+        </details>
+        <details>
+            <summary>Not Understanding Your Ecosystem</summary>
+            <div class="anti-pattern">Focusing only on individual components without seeing the whole system.</div>
+            <div class="best-practice">Monitor interactions between services to get a complete view.</div>
+        </details>
+        <details>
+            <summary>No Consistent Trace ID</summary>
+            <div class="anti-pattern">Logs and traces lack a consistent identifier, making debugging hard.</div>
+            <div class="best-practice">Use a standardized trace ID across all logs and services.</div>
+        </details>
+        
+        <h2>Comparison Table</h2>
+        <table>
+            <tr>
+                <th>Anti-Pattern</th>
+                <th>Best Practice</th>
+            </tr>
+            <tr>
+                <td>Forgetting the customer</td>
+                <td>Track customer impact metrics</td>
+            </tr>
+            <tr>
+                <td>Environment inconsistency</td>
+                <td>Maintain observability consistency across environments</td>
+            </tr>
+            <tr>
+                <td>No consistent trace ID</td>
+                <td>Implement consistent trace IDs</td>
+            </tr>
+            <tr>
+                <td>Lazy synthetic transactions</td>
+                <td>Ensure synthetic transactions cover full workflows</td>
+            </tr>
+            <tr>
+                <td>Unnecessary alerts</td>
+                <td>Only trigger alerts for critical issues</td>
+            </tr>
+        </table>
+        
+        <h1>Observability Decision-Making</h1>
+        <div class="quiz">
+            <h2>Check your status</h2>
+            <form>
+                <p>1. Do you track customer experience as part of observability?</p>
+                <input type="radio" name="q1" value="2"> Yes<br>
+                <input type="radio" name="q1" value="1"> Partially<br>
+                <input type="radio" name="q1" value="0"> No<br>
+                
+                <p>2. Do you have consistent observability across all environments?</p>
+                <input type="radio" name="q2" value="2"> Yes<br>
+                <input type="radio" name="q2" value="1"> Partially<br>
+                <input type="radio" name="q2" value="0"> No<br>
+                
+                <p>3. Are you able to trace a customer request end-to-end across services?</p>
+                <input type="radio" name="q3" value="2"> Yes<br>
+                <input type="radio" name="q3" value="1"> Partially<br>
+                <input type="radio" name="q3" value="0"> No<br>
+                
+                <p>4. Do your alerts reflect real customer impact?</p>
+                <input type="radio" name="q4" value="2"> Yes<br>
+                <input type="radio" name="q4" value="1"> Partially<br>
+                <input type="radio" name="q4" value="0"> No<br>
+                
+                <p>5. Do you monitor dependencies on downstream services?</p>
+                <input type="radio" name="q5" value="2"> Yes<br>
+                <input type="radio" name="q5" value="1"> Partially<br>
+                <input type="radio" name="q5" value="0"> No<br>
+                
+                <p>6. Do you track upstream customers using your services?</p>
+                <input type="radio" name="q6" value="2"> Yes<br>
+                <input type="radio" name="q6" value="1"> Partially<br>
+                <input type="radio" name="q6" value="0"> No<br>
+                
+                <p>7. Do you ensure consistent trace IDs across all services?</p>
+                <input type="radio" name="q7" value="2"> Yes<br>
+                <input type="radio" name="q7" value="1"> Partially<br>
+                <input type="radio" name="q7" value="0"> No<br>
+                
+                <p>8. Do you analyze front-end metrics from browsers and mobile devices?</p>
+                <input type="radio" name="q8" value="2"> Yes<br>
+                <input type="radio" name="q8" value="1"> Partially<br>
+                <input type="radio" name="q8" value="0"> No<br>
+                
+                <p>9. Do you correlate infrastructure health with business performance?</p>
+                <input type="radio" name="q9" value="2"> Yes<br>
+                <input type="radio" name="q9" value="1"> Partially<br>
+                <input type="radio" name="q9" value="0"> No<br>
+                
+                <p>10. Do you proactively identify observability gaps and address them?</p>
+                <input type="radio" name="q10" value="2"> Yes<br>
+                <input type="radio" name="q10" value="1"> Partially<br>
+                <input type="radio" name="q10" value="0"> No<br>
+                
+                <p>11. Do you conduct periodic reviews of observability effectiveness?</p>
+                <input type="radio" name="q11" value="2"> Yes<br>
+                <input type="radio" name="q11" value="1"> Partially<br>
+                <input type="radio" name="q11" value="0"> No<br>
+                
+                <p>12. Do you use AI/ML techniques for anomaly detection?</p>
+                <input type="radio" name="q12" value="2"> Yes<br>
+                <input type="radio" name="q12" value="1"> Partially<br>
+                <input type="radio" name="q12" value="0"> No<br>
+                
+                <p>13. Is your observability data stored securely with proper access controls?</p>
+                <input type="radio" name="q13" value="2"> Yes<br>
+                <input type="radio" name="q13" value="1"> Partially<br>
+                <input type="radio" name="q13" value="0"> No<br>
+                
+                <p>14. Do you have an incident response plan based on observability insights?</p>
+                <input type="radio" name="q14" value="2"> Yes<br>
+                <input type="radio" name="q14" value="1"> Partially<br>
+                <input type="radio" name="q14" value="0"> No<br>
+                
+                <p>15. Are all teams aligned on observability best practices?</p>
+                <input type="radio" name="q15" value="2"> Yes<br>
+                <input type="radio" name="q15" value="1"> Partially<br>
+                <input type="radio" name="q15" value="0"> No<br>
+                
+                <button type="button" class="submit-btn" onclick="calculateScore()">Submit</button>
+            </form>
+            <h3>Organization observability status:</h3>
+            <p id="quiz-result"></p>
+        </div>
+    </div>
+
+    <script>
+        function evaluateQuiz() {
+            let answers = document.querySelectorAll("input[type='radio']:checked");
+            let yesCount = 0;
+            answers.forEach(ans => { if (ans.value === "yes") yesCount++; });
+            let quizResultText = "";
+            if (yesCount >= 4) {
+                quizResultText = "Excellent - Your observability practices are solid!";
+            } else if (yesCount == 3) {
+                quizResultText = "Good - But there's room for improvement.";
+            } else {
+                quizResultText = "Needs Work - Focus on improving observability.";
+            }
+            document.getElementById("quizResult").textContent = quizResultText;
+        }
+        function calculateScore() {
+            let score = 0;
+            let answers = document.querySelectorAll('input[type="radio"]:checked');
+            answers.forEach(answer => {
+                score += parseInt(answer.value);
+            });
+            let resultText = "";
+            if (score >= 24) {
+                resultText = "Excellent Observability! Your organization has strong observability practices in place.";
+            } else if (score >= 15) {
+                resultText = "Moderate Observability. There are some gaps that need to be addressed.";
+            } else {
+                resultText = "Poor Observability. Significant improvements are needed.";
+            }
+            document.getElementById("quiz-result").innerText = resultText;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SRE Reliability Metrics Calculator</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #28a745; text-align: center; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0,0,0,0.1); transition: transform 0.3s ease-in-out; display: flex; flex-direction: column; align-items: center; }
+        .container:hover { transform: scale(1.02); }
+        h2 { color: #007bff; animation: fadeIn 1s ease-in-out; }
+        .input-group { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 10px; }
+        label { flex: 1; text-align: left; }
+        input, select { flex: 2; padding: 5px; border-radius: 5px; border: 1px solid #ccc; transition: box-shadow 0.3s ease-in-out; }
+        input:focus, select:focus { box-shadow: 0 0 8px rgba(0,123,255,0.5); outline: none; }
+        button { background-color: #007bff; color: white; padding: 10px; border: none; cursor: pointer; border-radius: 5px; margin-top: 10px; width: 100%; transition: background-color 0.3s ease-in-out; }
+        button:hover { background-color: #0056b3; }
+        .result { margin-top: 20px; font-weight: bold; background: #e9ecef; padding: 10px; border-radius: 5px; }
+        .explanation { margin-top: 30px; text-align: left; background: #f8f9fa; padding: 15px; border-radius: 5px; }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h2>SRE Reliability Metrics Calculator</h2>
+        
+        <div class="input-group">
+            <label>Total Time</label>
+            <input type="number" id="totalTime" placeholder="Enter total time">
+            <select id="totalTimeUnit">
+                <option value="1">Minutes</option>
+                <option value="60">Hours</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label>Downtime</label>
+            <input type="number" id="downtime" placeholder="Enter downtime">
+            <select id="downtimeUnit">
+                <option value="1">Minutes</option>
+                <option value="60">Hours</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label>Total Repair Time</label>
+            <input type="number" id="repairTime" placeholder="Enter total repair time">
+            <select id="repairTimeUnit">
+                <option value="1">Minutes</option>
+                <option value="60">Hours</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label>Total Acknowledgment Time</label>
+            <input type="number" id="ackTime" placeholder="Enter total acknowledgment time">
+            <select id="ackTimeUnit">
+                <option value="1">Minutes</option>
+                <option value="60">Hours</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label>Number of Failures</label>
+            <input type="number" id="failures" placeholder="Enter number of failures">
+        </div>
+        
+        <button onclick="calculateMetrics()">Calculate</button>
+        <button onclick="resetFields()" style="background-color: #dc3545;">Reset</button>
+        
+        <div class="result" id="results"></div>
+        
+        <div class="explanation">
+            <h3>Detailed Explanation with Examples</h3>
+            <p><b>Uptime:</b> The percentage of total operational time without downtime.</p>
+            <p>Example: If a system runs for 10,000 minutes in a month and experiences 100 minutes of downtime:</p>
+            <p>Uptime = ((10,000 - 100) / 10,000) * 100 = 99%</p>
+            <p>Formula: <b>Uptime (%) = ((Total Time - Downtime) / Total Time) * 100</b></p>
+            
+            <p><b>MTTR (Mean Time to Repair):</b> The average time taken to repair a failure.</p>
+            <p>Example: If there are 5 failures in a month, and the total repair time is 250 minutes:</p>
+            <p>MTTR = 250 / 5 = 50 minutes</p>
+            <p>Formula: <b>MTTR = Total Repair Time / Number of Failures</b></p>
+            
+            <p><b>MTTA (Mean Time to Acknowledge):</b> The average time taken to acknowledge an incident.</p>
+            <p>Example: If there are 5 incidents and the total acknowledgment time is 50 minutes:</p>
+            <p>MTTA = 50 / 5 = 10 minutes</p>
+            <p>Formula: <b>MTTA = Total Acknowledgment Time / Number of Incidents</b></p>
+            
+            <p><b>MTBF (Mean Time Between Failures):</b> The average operational time between failures.</p>
+            <p>Example: If the total operational time minus downtime is 9,900 minutes and there are 5 failures:</p>
+            <p>MTBF = 9,900 / 5 = 1,980 minutes</p>
+            <p>Formula: <b>MTBF = (Total Time - Downtime) / Number of Failures</b></p>
+        </div>
+    </div>
+    
+    <script>
+        function calculateMetrics() {
+            const totalTime = parseFloat(document.getElementById('totalTime').value) * parseFloat(document.getElementById('totalTimeUnit').value) || 0;
+            const downtime = parseFloat(document.getElementById('downtime').value) * parseFloat(document.getElementById('downtimeUnit').value) || 0;
+            const repairTime = parseFloat(document.getElementById('repairTime').value) * parseFloat(document.getElementById('repairTimeUnit').value) || 0;
+            const ackTime = parseFloat(document.getElementById('ackTime').value) * parseFloat(document.getElementById('ackTimeUnit').value) || 0;
+            const failures = parseFloat(document.getElementById('failures').value) || 1;
+            
+            if (totalTime === 0) {
+                alert("Total time must be greater than zero.");
+                return;
+            }
+            
+            const uptime = ((totalTime - downtime) / totalTime) * 100;
+            const mttr = repairTime / failures;
+            const mtta = ackTime / failures;
+            const mtbf = (totalTime - downtime) / failures;
+            
+            document.getElementById('results').innerText = `Uptime: ${uptime.toFixed(2)}%\nMTTR: ${mttr.toFixed(2)} mins\nMTTA: ${mtta.toFixed(2)} mins\nMTBF: ${mtbf.toFixed(2)} mins`;
+        }
+        
+        function resetFields() {
+            document.querySelectorAll('input').forEach(input => input.value = '');
+            document.getElementById('results').innerText = '';
+        }
+    </script>
+</body>
+</html>
